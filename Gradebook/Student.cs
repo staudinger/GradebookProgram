@@ -12,14 +12,7 @@ namespace gradebookprogram.Gradebook
 
         public bool Honors {get;set;}
 
-        public List<double> Grades {get;set;}
-
-        public double GradeAverage
-        {
-            get{
-                return Grades.Average();
-            }
-        }
+        public Dictionary<Assignment,double> Assignments {get;set;}
 
         public char LetterGrade {get;set;}
 
@@ -29,20 +22,24 @@ namespace gradebookprogram.Gradebook
             Period = period;
             Name = name;
             Honors = honors;
-            Grades = new List<double>();
+            Assignments = new Dictionary<Assignment, double>();
         }
 
-        public void AddGrade(double grade)
+        public void AddAssignment(Assignment assignment, double grade)
         {
-            Grades.Add(grade);
+            Assignments.Add(assignment, grade);
         }
 
-        public void RemoveGrade(double grade)
+        public void RemoveGrade(Assignment assignment)
         {
-            Grades.Remove(grade);
+            Assignments.Remove(assignment);
         }
 
-
+        public double GradeAverage()
+        {
+            double sum = Assignments.Sum(e => e.Value);
+            return sum/Assignments.Count;
+        }
 
 
 
