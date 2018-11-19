@@ -16,7 +16,7 @@ namespace gradebookprogram.Gradebook
         public int Period{get;set;}
 
         public List<Student> Students {get;set;}
-
+        public List<Assignment> Assignments {get;set;}
         public GradebookType Type{get;set;}
 
         public Gradebook(string className, int period)
@@ -24,8 +24,21 @@ namespace gradebookprogram.Gradebook
             ClassName = className;
             Period = period;
             Students = new List<Student>();
+            Assignments = new List<Assignment>();
             Type = GradebookType.Standard;
         }
+
+        public void AddAssignment(Assignment assignment)
+        {
+            Assignments.Add(assignment);
+        }
+
+        public void RemoveAssignment(string name)
+        {
+            var assignment = Assignments.FirstOrDefault(e=> e.Name == name);
+            Assignments.Remove(assignment);
+        }
+
 
         public void AddStudent(Student student)
         {
@@ -49,9 +62,10 @@ namespace gradebookprogram.Gradebook
                 }
             }
         }
-        public void AddAssignment(string name, Assignment assignment, double gradeScore)
+        public void AddStudentScore(string name, string assignmentName, double gradeScore)
         {
             var student = Students.FirstOrDefault(e=>e.Name == name);
+            var assignment = Assignments.FirstOrDefault(e=>e.Name == assignmentName);
             if (student == null)
             {
                 Console.WriteLine("student {0} was not found, try again.", name);
@@ -59,7 +73,7 @@ namespace gradebookprogram.Gradebook
             }
             student.AddAssignment(assignment, gradeScore);
         }
-        public void RemoveAssignment(string studentName, Assignment assignment)
+        public void RemoveStudentScore(string studentName, string assignmentName)
         {
             if (string.IsNullOrEmpty(studentName))
                 throw new ArgumentException("A Name is required to remove a grade from a student.");
@@ -69,6 +83,7 @@ namespace gradebookprogram.Gradebook
                 Console.WriteLine("student {0} was not found, try again.", studentName);
                 return;
             }
+            var assignment = Assignments.FirstOrDefault(e=>e.Name == assignmentName);
             student.RemoveAssignment(assignment);
         }
 
@@ -77,6 +92,13 @@ namespace gradebookprogram.Gradebook
             foreach (var student in Students)
             {
                 Console.WriteLine("{0} : {1} : {2}", student.Name, student.Year, student.Period);
+            }
+        }
+        public void ListAssignments()
+        {
+            foreach (var assignment in Assignments)
+            {
+                Console.WriteLine("{0} : {1} : {2}", assignment.Name, assignment.Points, assignment.Weight, assignment.Description);
             }
         }
 
@@ -100,43 +122,8 @@ namespace gradebookprogram.Gradebook
 
         public static dynamic ConvertToGradeBook(string json)
         {
-            // Get GradeBookType from the GradeBook.Enums namespace
-            var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                 from type in assembly.GetTypes()
-                                 where type.FullName == "Gradebook.Enums.GradebookType"
-                                 select type).FirstOrDefault();
-
-            var jobject = JsonConvert.DeserializeObject<JObject>(json);
-            var gradebookType = jobject.Property("Type")?.Value?.ToString();
-
-            if ((from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                 from type in assembly.GetTypes()
-                 where type.FullName == "Gradebook.Gradebook"
-                 select type).FirstOrDefault() == null)
-                 gradebookType = "Standard";
-            else
-            {
-                if (string.IsNullOrEmpty(gradebookType))
-                    gradebookType = "Standard";
-                else
-                    gradebookType = Enum.GetName(gradebookEnum, int.Parse(gradebookType));
-            }
-
-            // Get GradeBook from the GradeBook.GradeBooks namespace
-            var gradebook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                             from type in assembly.GetTypes()
-                             where type.FullName == "Gradebook.Gradebook"
-                             select type).FirstOrDefault();
-
-
-            //protection code
-            if (gradebook == null)
-                gradebook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                             from type in assembly.GetTypes()
-                             where type.FullName == "GradeBook.Gradebook"
-                             select type).FirstOrDefault();
-            
-            return JsonConvert.DeserializeObject(json, gradebook);
+           Gradebook gradebook = JsonConvert.DeserializeObject<Gradebook>(json);
+           return gradebook;
         }
     }
 }

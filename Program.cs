@@ -12,7 +12,7 @@ namespace gradebookprogram
             Console.WriteLine("#=======================#");
             Console.WriteLine();
 
-            UICommands.CommandPrompt();
+            StartUI.CommandPrompt();
 
             Console.WriteLine("Thank you for using GradeBook!");
             Console.WriteLine("Have a nice day!");
