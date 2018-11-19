@@ -7,7 +7,7 @@ namespace gradebookprogram.Gradebook
     public class Student
     {
         public int Period{get;set;}
-        public int Year {get; set;}
+        public string Year {get; set;}
         public string Name {get;set;}
 
         public bool Honors {get;set;}
@@ -16,7 +16,7 @@ namespace gradebookprogram.Gradebook
 
         public char LetterGrade {get;set;}
 
-        public Student(string name, bool honors, int year, int period)
+        public Student(string name, bool honors, string year, int period)
         {
             Year = year;
             Period = period;
@@ -30,7 +30,7 @@ namespace gradebookprogram.Gradebook
             Assignments.Add(assignment, grade);
         }
 
-        public void RemoveGrade(Assignment assignment)
+        public void RemoveAssignment(Assignment assignment)
         {
             Assignments.Remove(assignment);
         }
