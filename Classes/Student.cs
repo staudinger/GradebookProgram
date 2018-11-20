@@ -2,19 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace gradebookprogram.Gradebook
+namespace gradebookprogram.Classes
 {
     public class Student
     {
         public int Period{get;set;}
         public string Year {get; set;}
         public string Name {get;set;}
-
         public bool Honors {get;set;}
-
-        public Dictionary<Assignment,double> Assignments {get;set;}
-
-        public char LetterGrade {get;set;}
+        public Dictionary<string,double> Assignments {get;set;}
 
         public Student(string name, bool honors, string year, int period)
         {
@@ -22,20 +18,20 @@ namespace gradebookprogram.Gradebook
             Period = period;
             Name = name;
             Honors = honors;
-            Assignments = new Dictionary<Assignment, double>();
+            Assignments = new Dictionary<string, double>();
         }
 
-        public void AddAssignment(Assignment assignment, double grade)
+        public void AddAssignment(string assignment, double grade)
         {
             Assignments.Add(assignment, grade);
         }
 
-        public void RemoveAssignment(Assignment assignment)
+        public void RemoveAssignment(string assignment)
         {
             Assignments.Remove(assignment);
         }
 
-        public double GradeAverage()
+        public double AverageGrade()
         {
             double sum = Assignments.Sum(e => e.Value);
             return sum/Assignments.Count;

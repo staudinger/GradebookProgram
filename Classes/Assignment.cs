@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace gradebookprogram.Gradebook
+namespace gradebookprogram.Classes
 {
     public class Assignment
     {
@@ -17,9 +17,9 @@ namespace gradebookprogram.Gradebook
     public Assignment(string name, int weight, int points, string description)
         {
            Name = name;
-           Weight = weight;
            Points = points;
            Description = description;
+           Weight = weight;
 
         }
     }

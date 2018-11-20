@@ -1,5 +1,5 @@
 ﻿using System;
-using gradebookprogram.Gradebook;
+using gradebookprogram.Classes.UI;
 
 namespace gradebookprogram
 {
@@ -14,8 +14,7 @@ namespace gradebookprogram
 
             StartUI.CommandPrompt();
 
-            Console.WriteLine("Thank you for using GradeBook!");
-            Console.WriteLine("Have a nice day!");
+            Console.WriteLine("Closing GradeBook!");
             Console.Read();
         }
     }
